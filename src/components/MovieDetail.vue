@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section class="detail">
       <button class="backButton" @click="handleBack">←</button>
       <div class="mainBox">
         <img :src="localItem.imageUrl" alt="영화 포스터" />
@@ -89,8 +89,8 @@
 
 
 <style>
-section{width:960px;margin:120px auto;}
-.mainBox{display:flex;flex-direction:row;align-items:flex-start;justify-content:flex-start;gap:0 50px;font-weight:500;}
+section.detail{width:960px;margin:120px auto;}
+section.detail>.mainBox{display:flex;flex-direction:row;align-items:flex-start;justify-content:flex-start;gap:0 50px;font-weight:500;}
 .mainTitleWrap{display:flex;flex-direction:column;text-align:left;margin-top:30px;}
 .mainTitleWrap h3,h4{font-weight:500;}
 .mainTitleWrap .title{font-size:25px;}
@@ -120,7 +120,7 @@ section{width:960px;margin:120px auto;}
 }
 
 @media (max-width: 749px) {
-    section{max-width:750px;width:auto;padding:0 10px;margin:50px 0;}
-    .mainBox{flex-direction:column;;}
+    section.detail{max-width:750px;width:auto;padding:0 10px;margin:50px 0;}
+    section.detail>.mainBox{flex-direction:column;;}
 }
 </style>

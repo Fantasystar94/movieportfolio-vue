@@ -49,7 +49,7 @@ const getBoxofficeApi = async () => {
                 });
 
                 const detail = res.data.Data[0].Result[0];
-
+                console.log(detail)
                 const actorNames = [];
                 if (detail.actors && detail.actors.actor) {
                     const actors = detail.actors.actor;
@@ -58,7 +58,6 @@ const getBoxofficeApi = async () => {
                         actorNames.push(actors[i].actorNm);
                     }
                 }
-
                 return {
                     movieName: movie.movieNm,
                     movieCode: movie.movieCd,

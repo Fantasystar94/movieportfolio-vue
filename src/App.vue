@@ -1,7 +1,10 @@
 <template>
 
     <!-- 기본 페이지 (메인 페이지)에서는 BoxOffice와 BestMovies가 보이도록 -->
+    <TopView/>
+    <TitleView v-if="!isMovieDetailPage" :title="'영화 박스오피스'"/>
     <BoxOffice v-if="!isMovieDetailPage" />
+    <TitleView v-if="!isMovieDetailPage" :title="'추천영화'"/>
     <BestMovies v-if="!isMovieDetailPage" :movieArray="koreaMovies" />
     <BestMovies v-if="!isMovieDetailPage" :movieArray="classicMovies" />
     
@@ -17,12 +20,16 @@ import BoxOffice from './components/BoxOffice.vue';
 import BestMovies from './components/BestMovies.vue';
 import { koreaMovies, classicMovies } from './util/movieArray.js';
 import FooterView from './components/FooterView.vue';
+import TopView from './components/TopView.vue';
+import TitleView from './components/TitleView.vue';
 export default {
   name: 'App',
   components: {
     BoxOffice,
     BestMovies,
-    FooterView
+    FooterView,
+    TopView,
+    TitleView
   },
   data() {
     return {
@@ -45,16 +52,29 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-  width:1400px;
+  color:#000;
+  margin:0 auto;
 }
+/* Reset CSS */
 * {
   margin: 0;
   padding: 0;
-  list-style-type: none;
+  box-sizing: border-box; 
+  word-wrap: break-word; 
+  overflow-wrap: break-word; 
+  white-space: normal; 
 }
+
+body {
+  margin: 0; /* body의 마진 제거 */
+  padding: 0; /* body의 패딩 제거 */
+}
+
+ul {
+  list-style-type: none; 
+}
+
 @media (max-width: 749px) {
-  #app{max-width:750px;width:100%;}
+
 }
 </style>

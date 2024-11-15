@@ -2,7 +2,6 @@
   <div class="swiperComponent">
     <h3 class="title">{{ title }}</h3>
     <swiper
-     
       :spaceBetween="30"
       :breakpoints="breakpoints"
       :slidesPerView="5"
@@ -23,73 +22,89 @@
         <span>{{ formatDate(items[0].repRlsDate) }}</span>
       </swiper-slide>
     </swiper>
+
+    <!-- Modal Component -->
+    <ModalView 
+      :isOpen="isModalOpen" 
+      @close="isModalOpen = false"
+      :movieInfo="selectedItem"
+    />
   </div>
 </template>
-  
-  <script>
-  import { onMounted, ref } from 'vue';
-  import getBestMovieApi from '@/api/getBestMovieApi';
-  import { Swiper, SwiperSlide } from 'swiper/vue';
-  import 'swiper/swiper-bundle.css';
-  export default {
-    
-    name: 'BestMovies',
-      components: {
-      Swiper,
-      SwiperSlide
-    },
-    props: {
-      movieArray: {
-        type: Array,
-        required: true,
-      }
-    },
-    setup(props) {
-      const title = ref(props.movieArray.title);
-      const movies = ref([]); // API 호출 후 받은 영화 데이터를 저장할 변수
-      const isLoading = ref(true); // 로딩 상태를 관리
 
-      const breakpoints = ref({
+<script>
+import { onMounted, ref } from 'vue';
+import getBestMovieApi from '@/api/getBestMovieApi';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/swiper-bundle.css';
+import ModalView from '@/components/ModalView.vue';
+
+export default {
+  name: 'BestMovies',
+  components: {
+    Swiper,
+    SwiperSlide,
+    ModalView
+  },
+  props: {
+    movieArray: {
+      type: Array,
+      required: true,
+    }
+  },
+  setup(props) {
+    const title = ref(props.movieArray.title);
+    const movies = ref([]);
+    const isLoading = ref(true);
+    const isModalOpen = ref(false); // 모달 상태 관리
+    const selectedItem = ref(null); // 선택한 영화 데이터 저장
+
+    const breakpoints = ref({
       750: {
         slidesPerView: 5,
         spaceBetween: 30
       },
       0: {
         slidesPerView: 2,
-        spaceBetween: 5
+        spaceBetween: 10
       }
     });
-      onMounted(async () => {
-        try {
-        const data = await getBestMovieApi(props.movieArray.array); // props.movieArray를 전달
-        movies.value = data; // 받은 데이터를 movies에 저장
+
+    onMounted(async () => {
+      try {
+        const data = await getBestMovieApi(props.movieArray.array);
+        movies.value = data;
       } catch (error) {
         console.error('API 호출 중 오류 발생:', error);
       } finally {
-        isLoading.value = false; // 로딩 완료
+        isLoading.value = false;
       }
     });
+
+    const openModal = (item) => {
+      selectedItem.value = item;
+      isModalOpen.value = true;
+    };
+
+    const formatDate = (date) => {
+      return date.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
+    };
+
     return {
       title,
       movies,
       isLoading,
       Swiper,
       SwiperSlide,
-      breakpoints
+      breakpoints,
+      isModalOpen,
+      selectedItem,
+      openModal,
+      formatDate
     };
-  },
-  methods: {
-    openModal(item) {
-      // 모달을 여는 로직
-      console.log(item);
-    },
-    formatDate(date) {
-      // 날짜 포맷팅 (yyyy-mm-dd 형태로)
-      return date.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
-    }
   }
-  };
-  </script>
+};
+</script>
 <style>
 .swiperComponent{width:1400px;margin:0 auto;}
 .swiperComponent .title{text-align:left;margin-bottom:20px;}
@@ -100,7 +115,9 @@
 .swiper-slide.swiperItem h5{font-size:16px;}
 .swiper-slide.swiperItem span{color:gray;}
 @media (max-width:749px) {
-  .swiperComponent{width:auto;max-width:750px;margin:0 auto;}
+  .swiperComponent{width:auto;max-width:750px;margin:0 auto;padding:0 10px;}
+  .swiper-slide.swiperItem .swiperImg{max-height:230px;}
+  .swiper-slide.swiperItem .swiperImg>img{width:100%;height:auto;}
 }
 </style>
   
