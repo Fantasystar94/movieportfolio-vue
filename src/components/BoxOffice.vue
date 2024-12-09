@@ -40,7 +40,6 @@
           loading.value = true;  // 로딩 시작
           const { data, isLoading } = await getBoxofficeApi();
           boxOffice.value = data;
-          console.log(data)
           loading.value = isLoading;  // 로딩 종료
         } catch (error) {
           console.error('API 호출 오류:', error);

@@ -45,6 +45,7 @@ const getBoxofficeApi = async () => {
                         ServiceKey: imgKey,
                         title: movie.movieNm,
                         listCount: 1,
+                        releaseDts:movie.openDt
                     }
                 });
 
